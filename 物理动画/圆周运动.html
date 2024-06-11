@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="1200" height="900" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  // const ball = new Ball(200, 200, 10);
+  const ball1 = new Ball();
+  const ball2 = new Ball();
+  const ball3 = new Ball();
+  const ball4 = new Ball();
+  const ball5 = new Ball();
+  const balls = [ball1, ball2, ball3, ball4, ball5];
+  const centerX = 600;
+  const centerY = 400;
+  const radius = 100;
+  let angle = 0;
+  const minRadius = 3;
+  const earthSpinRadius = 60;
+  const planetsInfo = [
+    {
+      spinRadius: 0.38 * earthSpinRadius,
+      radius: minRadius,
+      period: 87.7,
+      color: 'grey',
+    },
+    {
+      spinRadius: 0.72 * earthSpinRadius,
+      radius: 60.52 * minRadius / 24.4,
+      period: 224.7,
+      color: 'yellow',
+    },
+    {
+      spinRadius: earthSpinRadius,
+      radius: 63.78 * minRadius / 24.4,
+      period: 365.24,
+      color: 'blue',
+    },
+    {
+      spinRadius: 1.52 * earthSpinRadius,
+      radius: 33.98 * minRadius / 24.4,
+      period: 686.98,
+      color: 'red',
+    },
+    {
+      spinRadius: 5.2 * earthSpinRadius,
+      radius: 714.92 * minRadius / 24.4,
+      period: 4332.60,
+      color: 'cyan'
+    }
+  ];
+  function drawPlanet({ spinRadius }) {
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, spinRadius, 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.strokeStyle = '#ccc';
+    ctx.stroke();
+  }
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    balls.forEach((b, index) => {
+      const info = planetsInfo[index];
+      drawPlanet(info);
+      b.x = centerX + Math.cos(angle / info.period) * info.spinRadius;
+      b.y = centerY + Math.sin(angle / info.period) * info.spinRadius;
+      b.radius = info.radius;
+      b.color = info.color;
+      b.fill(ctx);
+    });
+    angle += 1;
+    // requestAnimationFrame(animate);
+    // ctx.clearRect(0, 0, 400, 400);
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    // ctx.closePath();
+    // ctx.stroke();
+    // ball.x = centerX + Math.cos(angle) * radius;
+    // ball.y = centerY + Math.sin(angle) * radius;
+    // ball.fill(ctx);
+    // angle += 0.05;
+  }
+  animate();
+</script>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const ballRadius = 10;
+  let startX = ballRadius;
+  let startY = canvas.height / 2;
+  const ball = new Ball();
+  ball.radius = ballRadius;
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ball.x = startX;
+    ball.y = startY;
+    ball.fill(ctx);
+    startX += 0.5;
+    startY = 20 * Math.sin(startX/5) + canvas.height / 2;
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
+</html>

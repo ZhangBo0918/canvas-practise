@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let initX = canvas.width / 2;
+  let initY = canvas.height / 2;
+  const arrow = new Arrow(initX, initY);
+  const speed = 2;
+  let angle = 0;
+  let pageX = initX, pageY = initY;
+  window.addEventListener('mousemove', e => {
+    pageX = e.pageX;
+    pageY = e.pageY;
+    requestAnimationFrame(animate);
+  })
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dx = pageX - initX;
+    const dy = pageY - initY;
+    angle = Math.atan2(dy, dx);
+    const vx = Math.cos(angle) * speed;
+    const vy = Math.sin(angle) * speed;
+    initX += vx;
+    initY += vy;
+    arrow.x = initX;
+    arrow.y = initY;
+    arrow.angle = angle;
+    arrow.fill(ctx);
+    if (Math.abs(pageX - initX) > 1 && Math.abs(pageY - initY) > 1) {
+      requestAnimationFrame(animate);
+    }
+  }
+</script>
+
+</html>

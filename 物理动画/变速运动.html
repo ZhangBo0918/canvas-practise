@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const bottom = canvas.height;
+  const circleRadius = 10;
+  const ball = new Ball(canvas.width / 4, bottom / 2.5, circleRadius);
+  const ball1 = new Ball(canvas.width / 2, bottom - circleRadius, circleRadius, 'green');
+  let animateId = null;
+  // ball的参数
+  const g = 10;
+  let v = 0;
+  const bonuce = 0.8;
+  let dir = 1;
+  let h = bottom / 2.5;
+  const dt = 0.1;
+  // ball1的参数
+  let v0 = 30;
+  const a = 2;
+  let x0 = canvas.width / 2;
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    console.log(1, (bottom - circleRadius), h);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    v += (dir * g * dt);
+    if (dir > 0) {
+      h += (v * dt);
+      if (bottom - circleRadius - h < 0.01) {
+        dir = -1;
+        v = bonuce * v;
+        h = bottom - circleRadius;
+      }
+    } else {
+      h -= (v * dt);
+      if (v < 0.01) {
+        dir = 1;
+        v = 0;
+      }
+    }
+    ball.y = h;
+    ball.fill(ctx);
+    if (v0 > 0) {
+      v0 -= (a * dt);
+      x0 += (v0 * dt);
+    } else {
+      v0 = 0;
+    }
+    ball1.x = x0;
+    ball1.fill(ctx);
+    if (v || (bottom - circleRadius - h) >= 0.05) {
+      animateId = requestAnimationFrame(animate);
+    } else {
+      animateId && cancelAnimationFrame(animateId);
+      animationId = null;
+    }
+  }
+  animate();
+</script>
+
+</html>

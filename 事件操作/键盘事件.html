@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let dir = '';
+  const circleRadius = 20;
+  let x = circleRadius, y = circleRadius;
+  func()
+  window.getDirection(key => { dir = key; func(); });
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function func() {
+    if (dir) {
+      if (dir === 'left') x -= 20;
+      else if (dir === 'right') x += 20;
+      else if (dir === 'up') y -= 20;
+      else y += 20;
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath()
+    ctx.arc(x, y, circleRadius, 0, 2 * Math.PI, true);
+    ctx.closePath();
+    ctx.fillStyle = 'hotpink';
+    ctx.fill();
+  }
+</script>
+
+</html>

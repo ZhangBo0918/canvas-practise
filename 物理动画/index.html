@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const arrow = new Arrow(canvas.width / 2, canvas.height / 2);
+  window.addEventListener('mousemove', e => {
+    rotate(e);
+  });
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function rotate({ pageX, pageY }) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dx = pageX - canvas.width / 2;
+    const dy = pageY - canvas.height / 2;
+    arrow.angle = Math.atan2(dy, dx);
+    arrow.fill(ctx);
+  }
+</script>
+
+</html>

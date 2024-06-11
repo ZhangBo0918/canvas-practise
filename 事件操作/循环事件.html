@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const circleRadius = 20;
+  let startX = circleRadius, startY = canvas.height / 2;
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawCircle(startX, 'hotpink');
+    drawCircle(startX + 60, 'green');
+    startX += 2;
+    if (startX >= canvas.width + circleRadius) {
+      startX = circleRadius;
+    }
+    requestAnimationFrame(animate)
+  }
+  function drawCircle(x, fillColor) {
+    ctx.fillStyle = fillColor;
+    ctx.beginPath();
+    if (x >= circleRadius && x <= canvas.width - circleRadius) {
+      ctx.arc(x, startY, circleRadius, 0, 2 * Math.PI, true);
+    } else {
+      const overX = x - canvas.width + circleRadius;
+      ctx.arc(overX - circleRadius, startY, circleRadius, 0, 2 * Math.PI, false);
+      ctx.fill();
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.arc(x, startY, circleRadius, 0, 2 * Math.PI, false);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+  animate();
+</script>
+
+</html>

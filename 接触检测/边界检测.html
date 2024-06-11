@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../utils/getDirection.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="250" style="border: 1px dashed gray;"></canvas>
+</body>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const circleRadius = 20;
+  const dis1 = { x: canvas.width / 4, y: canvas.height / 4 };
+  const v1 = { vx: -3, vy: -4 };
+  const ball1 = new Ball(dis1.x, dis1.y);
+  const dis2 = { x: canvas.width / 2, y: canvas.height / 2 };
+  const v2 = { vx: 4, vy: 4 };
+  const ball2 = new Ball(dis2.x, dis2.y, circleRadius, 'green');
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    collision();
+    move(dis1, v1, ball1);
+    move(dis2, v2, ball2);
+  }
+  function move(dis, v, ball) {
+    dis.x += v.vx;
+    dis.y += v.vy;
+    // 这一段做边界检测
+    if (dis.x <= circleRadius) {
+      dis.x = circleRadius;
+      v.vx = -v.vx;
+    }
+    if (dis.x >= canvas.width - circleRadius) {
+      dis.x = canvas.width - circleRadius;
+      v.vx = -v.vx;
+    }
+    if (dis.y <= circleRadius) {
+      dis.y = circleRadius;
+      v.vy = -v.vy;
+    }
+    if (dis.y >= canvas.height - circleRadius) {
+      dis.y = canvas.height - circleRadius;
+      v.vy = -v.vy;
+    }
+    ball.x = dis.x;
+    ball.y = dis.y;
+    ball.fill(ctx);
+  }
+  // 碰撞检测
+  function collision() {
+    if ((dis1.x - dis2.x) ** 2 + (dis1.y - dis2.y) ** 2 <= (2 * circleRadius) ** 2) {
+      v1.vx = -v1.vx;
+      v2.vx = -v2.vx;
+      v1.vy = -v1.vy;
+      v2.vy = -v2.vy;
+    }
+  }
+  animate();
+</script>
+
+</html>
